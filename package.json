@@ -1,0 +1,27 @@
+{
+  "name": "qunit-action",
+  "author": "Izel Nakri",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/qunit": "^2.9.6",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "parcel": "^1.12.4",
+    "prettier": "^2.1.2",
+    "qunit-dom": "^1.5.0",
+    "sass": "^1.29.0",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "qunit": "^2.12.0"
+  }
+}
