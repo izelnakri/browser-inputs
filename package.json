@@ -1,27 +1,61 @@
 {
   "name": "qunit-action",
+  "description": "Native browser user input simulators for frontend testing",
   "author": "Izel Nakri",
-  "license": "MIT",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 15.0"
+  },
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/izelnakri/qunit-action.git"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node_modules/.bin/esbuild $(find 'src' -type f) --format=cjs --platform=node --outdir='./dist'",
+    "prepack": "npm run build",
+    "test": "npm run build && node_modules/.bin/qunitx src test --browser --debug --watch",
+    "test:ci": "node_modules/.bin/qunitx test/index.ts --browser --debug --failFast"
   },
   "devDependencies": {
+    "@emberx/component": "^0.0.11",
+    "@emberx/test-helpers": "^0.0.11",
     "@types/qunit": "^2.9.6",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
+    "auto-changelog": "^2.2.1",
+    "esbuild": "^0.12.1",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "parcel": "^1.12.4",
+    "parcel": "2.0.0-beta.3.1",
     "prettier": "^2.1.2",
+    "release-it": "^14.6.2",
     "qunit-dom": "^1.5.0",
+    "qunitx": "^0.1.10",
     "sass": "^1.29.0",
     "typescript": "^4.0.5"
   },
-  "dependencies": {
-    "qunit": "^2.12.0"
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true
+  },
+  "qunitx": {
+    "output": "tmp",
+    "timeout": 20000,
+    "failFast": false,
+    "port": 1234
+  },
+  "release-it": {
+    "git": {
+      "changelog": "npm run changelog:unreleased"
+    },
+    "github": {
+      "release": true
+    },
+    "hooks": {
+      "after:bump": "npm run changelog:update"
+    }
   }
 }
