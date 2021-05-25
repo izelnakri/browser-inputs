@@ -1,4 +1,4 @@
-import { isDocument, isElement } from './index.ts';
+import { isDocument, isElement } from './index';
 
 export type Lit = string | number | boolean | undefined | null | void | {};
 export function tuple<T extends Lit[]>(...args: T) {

@@ -1,6 +1,6 @@
-import { getElement, isFormControl, nodeQuery, isFocusable } from './index.ts';
-import { __focus__ } from './focus.ts';
-import fireEvent from './fire-event.ts';
+import { getElement, isFormControl, nodeQuery, isFocusable } from './index';
+import { __focus__ } from './focus';
+import fireEvent from './fire-event';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;

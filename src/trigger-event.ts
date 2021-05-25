@@ -1,5 +1,5 @@
-import { getElement, isFormControl } from './index.ts';
-import fireEvent from './fire-event.ts';
+import { getElement, isFormControl } from './index';
+import fireEvent from './fire-event';
 
 /**
  * Triggers an event on the specified target.

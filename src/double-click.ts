@@ -1,7 +1,7 @@
-import fireEvent from './fire-event.ts';
-import { isFocusable, getElement, isFormControl } from './index.ts';
-import { __focus__ } from './focus.ts';
-import { DEFAULT_CLICK_OPTIONS } from './click.ts';
+import fireEvent from './fire-event';
+import { isFocusable, getElement, isFormControl } from './index';
+import { __focus__ } from './focus';
+import { DEFAULT_CLICK_OPTIONS } from './click';
 
 export function __doubleClick__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);

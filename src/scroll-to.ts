@@ -1,5 +1,5 @@
-import { getElement, isElement } from './index.ts';
-import fireEvent from './fire-event.ts';
+import { getElement, isElement } from './index';
+import fireEvent from './fire-event';
 
 /**
   Scrolls DOM element or selector to the given coordinates.

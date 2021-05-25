@@ -1,6 +1,6 @@
-import { getElement, isSelectElement } from './index.ts';
-import { __focus__ } from './focus.ts';
-import fireEvent from './fire-event.ts';
+import { getElement, isSelectElement } from './index';
+import { __focus__ } from './focus';
+import fireEvent from './fire-event';
 
 /**
   Set the `selected` property true for the provided option the target is a

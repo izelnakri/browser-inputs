@@ -1,6 +1,6 @@
-import { getElement, isFormControl } from './index.ts';
-import { __click__ } from './click.ts';
-import fireEvent from './fire-event.ts';
+import { getElement, isFormControl } from './index';
+import { __click__ } from './click';
+import fireEvent from './fire-event';
 
 export default async function tap(target: Target, options: object = {}): Promise<void> {
   if (!target) {

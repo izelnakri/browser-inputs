@@ -1,6 +1,6 @@
-import { getElement, isFormControl, isNumeric } from './index.ts';
-import fireEvent, { isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './fire-event.ts';
-import type { KeyboardEventType } from './fire-event.ts';
+import { getElement, isFormControl, isNumeric } from './index';
+import fireEvent, { isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './fire-event';
+import type { KeyboardEventType } from './fire-event';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;

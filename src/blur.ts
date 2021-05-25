@@ -1,5 +1,5 @@
-import fireEvent from './fire-event.ts';
-import { getElement, isFocusable, nodeQuery } from './index.ts';
+import fireEvent from './fire-event';
+import { getElement, isFocusable, nodeQuery } from './index';
 
 export function __blur__(element: HTMLElement | Element | Document | SVGElement): void {
   if (!isFocusable(element)) {

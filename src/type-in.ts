@@ -5,11 +5,11 @@ import {
   isContentEditable,
   isDocument,
   HTMLElementContentEditable,
-} from './index.ts';
-import { __focus__ } from './focus.ts';
-import { __triggerKeyEvent__ } from './trigger-key-event.ts';
-import fireEvent from './fire-event.ts';
-import type { FormControl } from './index.ts';
+} from './index';
+import { __focus__ } from './focus';
+import { __triggerKeyEvent__ } from './trigger-key-event';
+import fireEvent from './fire-event';
+import type { FormControl } from './index';
 
 export interface Options {
   delay?: number;

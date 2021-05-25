@@ -1,6 +1,6 @@
-import { getElement, isFormControl, isContentEditable, guardForMaxlength } from './index.ts';
-import fireEvent from './fire-event.ts';
-import { __focus__ } from './focus.ts';
+import { getElement, isFormControl, isContentEditable, guardForMaxlength } from './index';
+import fireEvent from './fire-event';
+import { __focus__ } from './focus';
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
