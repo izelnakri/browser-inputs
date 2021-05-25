@@ -11,6 +11,8 @@ import { __triggerKeyEvent__ } from './trigger-key-event';
 import fireEvent from './fire-event';
 import type { FormControl } from './index';
 
+type Target = string | Element | Document | Window;
+
 export interface Options {
   delay?: number;
 }
@@ -35,6 +37,7 @@ export default async function typeIn(
     throw new Error('Must pass an element or selector to `typeIn`.');
   }
 
+  // @ts-ignore
   const element = getElement(target);
 
   if (!element) {
@@ -55,6 +58,7 @@ export default async function typeIn(
 
   const { delay = 50 } = options;
 
+  // @ts-ignore
   return fillOut(element, text, delay).then(() => fireEvent(element, 'change'));
   // .then(settled)
 }

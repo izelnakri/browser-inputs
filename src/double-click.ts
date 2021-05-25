@@ -44,7 +44,7 @@ export default async function doubleClick(
   if (!target) {
     throw new Error('Must pass an element or selector to `doubleClick`.');
   }
-
+  // @ts-ignore
   const element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);

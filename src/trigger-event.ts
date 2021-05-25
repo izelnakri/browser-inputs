@@ -1,6 +1,8 @@
 import { getElement, isFormControl } from './index';
 import fireEvent from './fire-event';
 
+type Target = string | Element | Document | Window;
+
 /**
  * Triggers an event on the specified target.
  *
@@ -47,6 +49,7 @@ export default async function triggerEvent(
   const element = getWindowOrElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
+    // @ts-ignore
   } else if (isFormControl(element) && element.disabled) {
     throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
   }
@@ -61,5 +64,6 @@ export function getWindowOrElement(target: Target): Element | Document | Window 
     return target as Window;
   }
 
+  // @ts-ignore
   return getElement(target);
 }

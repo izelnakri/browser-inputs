@@ -2,6 +2,8 @@ import { getElement, isFormControl, isContentEditable, guardForMaxlength } from 
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 
+type Target = string | Element | Document | Window;
+
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
   the target is a content editable element) then trigger `change` and `input`
@@ -12,6 +14,7 @@ export default async function fillIn(target: Target, text: string): Promise<void
     throw new Error('Must pass an element or selector to `fillIn`.');
   }
 
+  // @ts-ignore
   const element = getElement(target) as Element | HTMLElement;
   if (!element) {
     throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);

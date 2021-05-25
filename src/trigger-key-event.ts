@@ -2,6 +2,8 @@ import { getElement, isFormControl, isNumeric } from './index';
 import fireEvent, { isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './fire-event';
 import type { KeyboardEventType } from './fire-event';
 
+type Target = string | Element | Document | Window;
+
 export interface KeyModifiers {
   ctrlKey?: boolean;
   altKey?: boolean;
@@ -164,6 +166,7 @@ export default async function triggerKeyEvent(
     throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
   }
 
+  // @ts-ignore
   const element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`);

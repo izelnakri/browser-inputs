@@ -23,6 +23,7 @@ export default async function scrollTo(
     throw new Error(`Element not found when calling \`scrollTo('${target}')\`.`);
   } else if (!isElement(element)) {
     throw new Error(
+      // @ts-ignore
       `"target" must be an element, but was a ${element.nodeType} when calling \`scrollTo('${target}')\`.`
     );
   }
