@@ -1,6 +1,6 @@
 {
-  "name": "qunit-action",
-  "description": "Native browser user input simulators for frontend testing",
+  "name": "browser-inputs",
+  "description": "Native browser user input simulators for frontend testing. 0 dependencies, extraced from ember.js",
   "author": "Izel Nakri",
   "version": "0.1.2",
   "license": "MIT",
@@ -13,7 +13,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/izelnakri/qunit-action.git"
+    "url": "https://github.com/izelnakri/browser-inputs.git"
   },
   "scripts": {
     "changelog:unreleased": "node_modules/.bin/auto-changelog --stdout --commit-limit false --package --unreleased-only --hide-credit --sort-commits date-desc",
