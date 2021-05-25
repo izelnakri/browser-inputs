@@ -16,9 +16,15 @@
     "url": "https://github.com/izelnakri/qunit-action.git"
   },
   "scripts": {
+    "changelog:unreleased": "node_modules/.bin/auto-changelog --stdout --commit-limit false --package --unreleased-only --hide-credit --sort-commits date-desc",
+    "changelog:preview": "node_modules/.bin/auto-changelog --stdout --commit-limit false --package -u --sort-commits date-desc",
+    "changelog:update": "node_modules/.bin/auto-changelog --commit-limit false --package --sort-commits date-desc",
     "dedupe": "node scripts/dedupe-glimmer-validator.js",
     "build": "npm run dedupe && node_modules/.bin/esbuild $(find 'src' -type f) --format=cjs --platform=node --outdir='./dist'",
     "prepack": "npm run build",
+    "release:alpha": "node_modules/.bin/release-it --preRelease=alpha --no-git.requireUpstream -V",
+    "release:beta": "node_modules/.bin/release-it --preRelease=beta --no-git.requireUpstream -V",
+    "release": "node_modules/.bin/release-it -V",
     "test": "npm run build && node_modules/.bin/qunitx src test --browser --debug --watch",
     "test:ci": "node_modules/.bin/qunitx test/index.ts --browser --debug --failFast"
   },
