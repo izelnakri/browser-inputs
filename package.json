@@ -2,7 +2,7 @@
   "name": "qunit-action",
   "description": "Native browser user input simulators for frontend testing",
   "author": "Izel Nakri",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "engines": {
     "node": ">= 15.0"
@@ -20,7 +20,7 @@
     "changelog:preview": "node_modules/.bin/auto-changelog --stdout --commit-limit false --package -u --sort-commits date-desc",
     "changelog:update": "node_modules/.bin/auto-changelog --commit-limit false --package --sort-commits date-desc",
     "dedupe": "node scripts/dedupe-glimmer-validator.js",
-    "build": "npm run dedupe && node_modules/.bin/esbuild $(find 'src' -type f) --format=cjs --platform=node --outdir='./dist'",
+    "build": "npm run dedupe && tsc",
     "prepack": "npm run build",
     "release:alpha": "node_modules/.bin/release-it --preRelease=alpha --no-git.requireUpstream -V",
     "release:beta": "node_modules/.bin/release-it --preRelease=beta --no-git.requireUpstream -V",
