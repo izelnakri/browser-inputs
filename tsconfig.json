@@ -20,9 +20,7 @@
   "exclude": [
     "node_modules",
     "tmp",
-    "tests",
     "dist",
-    "scripts",
-    "src/components"
+    "scripts"
   ]
 }

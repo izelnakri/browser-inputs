@@ -1,0 +1,12 @@
+import './blur-test.ts';
+import './click-test.ts';
+import './double-click-test.ts';
+import './fill-in-test.ts';
+import './focus-test.ts';
+import './scroll-to-test.ts';
+import './select-files-test.ts';
+import './select-test.ts';
+import './tap-test.ts';
+import './trigger-event-test.ts';
+import './trigger-key-event-test.ts';
+import './type-in-test.ts';

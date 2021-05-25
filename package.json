@@ -7,13 +7,17 @@
   "engines": {
     "node": ">= 15.0"
   },
+  "files": [
+    "dist/*"
+  ],
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/izelnakri/qunit-action.git"
   },
   "scripts": {
-    "build": "node_modules/.bin/esbuild $(find 'src' -type f) --format=cjs --platform=node --outdir='./dist'",
+    "dedupe": "node scripts/dedupe-glimmer-validator.js",
+    "build": "npm run dedupe && node_modules/.bin/esbuild $(find 'src' -type f) --format=cjs --platform=node --outdir='./dist'",
     "prepack": "npm run build",
     "test": "npm run build && node_modules/.bin/qunitx src test --browser --debug --watch",
     "test:ci": "node_modules/.bin/qunitx test/index.ts --browser --debug --failFast"
