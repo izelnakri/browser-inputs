@@ -2,7 +2,7 @@
   "name": "browser-inputs",
   "description": "Native browser user input simulators for frontend testing. 0 dependencies, extraced from ember.js",
   "author": "Izel Nakri",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "engines": {
     "node": ">= 15.0"
