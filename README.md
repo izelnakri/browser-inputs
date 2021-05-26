@@ -15,17 +15,17 @@ await click(document.querySelector('#button'));
 await click('#button');
 ```
 
-- #### Public API:
+#### Public API:
 
-- blur
-- click
-- doubleClick
-- fillIn
-- fireEvent
-- focus
-- scrollTo
-- select
-- tap
-- triggerEvent
-- triggerKeyEvent
-- typeIn
+- async blur(target, relatedTarget?)
+- async click(target, mouseEventOptions?);
+- async doubleClick(target, mouseEventOptions?);
+- async fillIn(target, text);
+- fireEvent(element, eventType, options?);
+- async focus(target);
+- async scrollTo(target, x, y);
+- async select(target, optionsToSelect, keepPreviouslySelected = false);
+- async tap(target, mouseEventOptions);
+- async triggerEvent(target, eventType, options);
+- async triggerKeyEvent(target, keyboardEventType, keyCode, keyModifier? = DEFAULT_MODIFIERS);
+- async typeIn(target, text, optionsForDelay?);
