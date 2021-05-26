@@ -10,6 +10,7 @@ ADD tsconfig.json package.json package.json /code/
 RUN npm install
 
 ADD src /code/src/
+ADD scripts /code/scripts/
 ADD test /code/test
 
 RUN npm run build
