@@ -1,4 +1,5 @@
-import { getElement, isFormControl, nodeQuery, isFocusable } from './index';
+import Target, { isFormControl, isFocusable } from './internal/index';
+import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import fireEvent from './fire-event';
 
@@ -21,18 +22,14 @@ export function __click__(element: Element | Document, options: MouseEventInit):
   fireEvent(element, 'click', options);
 }
 
-export default async function click(
-  target: nodeQuery,
-  _options: MouseEventInit = {}
-): Promise<void> {
-  const options = Object.assign({}, DEFAULT_CLICK_OPTIONS, _options);
+export default async function click(target: Target, _options: MouseEventInit = {}): Promise<void> {
+  let options = Object.assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   if (!target) {
     throw new Error('Must pass an element or selector to `click`.');
   }
 
-  const element = getElement(target);
-
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`click('${target}')\`.`);
   } else if (isFormControl(element) && element.disabled) {

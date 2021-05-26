@@ -1,17 +1,15 @@
-import {
-  getElement,
+import Target, {
+  FormControl,
   isFormControl,
   guardForMaxlength,
   isContentEditable,
   isDocument,
   HTMLElementContentEditable,
-} from './index';
+} from './internal/index';
+import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import fireEvent from './fire-event';
-import type { FormControl } from './index';
-
-type Target = string | Element | Document | Window;
 
 export interface Options {
   delay?: number;
@@ -32,14 +30,12 @@ export default async function typeIn(
   target: Target,
   text: string,
   options: Options = {}
-): Promise<void> {
+): Promise<Event | void> {
   if (!target) {
     throw new Error('Must pass an element or selector to `typeIn`.');
   }
 
-  // @ts-ignore
-  const element = getElement(target);
-
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`typeIn('${target}')\``);
   } else if (isDocument(element) || (!isFormControl(element) && !isContentEditable(element))) {
@@ -56,15 +52,14 @@ export default async function typeIn(
 
   __focus__(element);
 
-  const { delay = 50 } = options;
+  let { delay = 50 } = options;
 
-  // @ts-ignore
   return fillOut(element, text, delay).then(() => fireEvent(element, 'change'));
   // .then(settled)
 }
 
 function fillOut(element: FormControl | HTMLElementContentEditable, text: string, delay: number) {
-  const inputFunctions = text.split('').map((character) => keyEntry(element, character));
+  let inputFunctions = text.split('').map((character) => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
     return currentPromise.then(() => delayedExecute(delay)).then(func);
   }, Promise.resolve(undefined));
@@ -74,9 +69,9 @@ function keyEntry(
   element: FormControl | HTMLElementContentEditable,
   character: string
 ): () => void {
-  const shiftKey = character === character.toUpperCase() && character !== character.toLowerCase();
-  const options = { shiftKey };
-  const characterKey = character.toUpperCase();
+  let shiftKey = character === character.toUpperCase() && character !== character.toLowerCase();
+  let options = { shiftKey };
+  let characterKey = character.toUpperCase();
 
   return function () {
     // NOTE: this was returning promise previously in @ember/test-helpers
@@ -84,7 +79,7 @@ function keyEntry(
     __triggerKeyEvent__(element, 'keypress', characterKey, options);
 
     if (isFormControl(element)) {
-      const newValue = element.value + character;
+      let newValue = element.value + character;
       guardForMaxlength(element, newValue, 'typeIn');
 
       element.value = newValue;

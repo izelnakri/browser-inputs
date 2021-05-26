@@ -1,4 +1,4 @@
-import { isDocument, isElement } from './index';
+import { isDocument, isElement } from './internal/index';
 
 export type Lit = string | number | boolean | undefined | null | void | {};
 export function tuple<T extends Lit[]>(...args: T) {
@@ -71,7 +71,6 @@ function fireEvent(
   }
 
   let event;
-
   if (isKeyboardEventType(eventType)) {
     event = buildKeyboardEvent(eventType, options);
   } else if (isMouseEventType(eventType)) {
@@ -113,9 +112,9 @@ export default fireEvent;
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
 
 function buildBasicEvent(type: string, options: any = {}): Event {
-  const event = document.createEvent('Events');
-  const bubbles = options.bubbles !== undefined ? options.bubbles : true;
-  const cancelable = options.cancelable !== undefined ? options.cancelable : true;
+  let event = document.createEvent('Events');
+  let bubbles = options.bubbles !== undefined ? options.bubbles : true;
+  let cancelable = options.cancelable !== undefined ? options.cancelable : true;
 
   delete options.bubbles;
   delete options.cancelable;
@@ -162,7 +161,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 }
 
 function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
-  const eventOpts: any = Object.assign({}, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts: any = Object.assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
@@ -235,8 +234,8 @@ function buildFileEvent(
   element: HTMLInputElement,
   options: any = {}
 ): Event {
-  const event = buildBasicEvent(type);
-  const files = options.files;
+  let event = buildBasicEvent(type);
+  let files = options.files;
 
   if (Array.isArray(options)) {
     throw new Error(
@@ -254,6 +253,25 @@ function buildFileEvent(
     Object.defineProperty(element, 'files', {
       value: files,
       configurable: true,
+    });
+
+    let elementProto = Object.getPrototypeOf(element);
+    let valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
+    Object.defineProperty(element, 'value', {
+      configurable: true,
+      get() {
+        return valueProp!.get!.call(element);
+      },
+      set(value) {
+        valueProp!.set!.call(element, value);
+
+        // We are sure that the value is empty here.
+        // For a non-empty value the original setter must raise an exception.
+        Object.defineProperty(element, 'files', {
+          configurable: true,
+          value: [],
+        });
+      },
     });
   }
 

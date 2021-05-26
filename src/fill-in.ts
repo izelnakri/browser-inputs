@@ -1,8 +1,7 @@
-import { getElement, isFormControl, isContentEditable, guardForMaxlength } from './index';
+import Target, { isFormControl, isContentEditable, guardForMaxlength } from './internal/index';
+import getElement from './internal/get-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
-
-type Target = string | Element | Document | Window;
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
@@ -14,8 +13,7 @@ export default async function fillIn(target: Target, text: string): Promise<void
     throw new Error('Must pass an element or selector to `fillIn`.');
   }
 
-  // @ts-ignore
-  const element = getElement(target) as Element | HTMLElement;
+  let element = getElement(target) as Element | HTMLElement;
   if (!element) {
     throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
   } else if (typeof text === 'undefined' || text === null) {

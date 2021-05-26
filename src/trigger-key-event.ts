@@ -1,8 +1,7 @@
-import { getElement, isFormControl, isNumeric } from './index';
+import Target, { isFormControl, isNumeric } from './internal/index';
+import getElement from './internal/get-element';
 import fireEvent, { isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './fire-event';
 import type { KeyboardEventType } from './fire-event';
-
-type Target = string | Element | Document | Window;
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -89,7 +88,7 @@ function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): s
     }
   }
 
-  const key = keyFromKeyCode[keycode];
+  let key = keyFromKeyCode[keycode];
   if (key) {
     return key;
   }
@@ -116,11 +115,11 @@ export function __triggerKeyEvent__(
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ) {
   if (typeof key === 'number') {
-    const props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
+    let props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
 
     fireEvent(element, eventType, Object.assign(props, modifiers));
   } else if (typeof key === 'string' && key.length !== 0) {
-    const firstCharacter = key[0];
+    let firstCharacter = key[0];
     if (firstCharacter !== firstCharacter.toUpperCase()) {
       throw new Error(
         `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
@@ -131,9 +130,8 @@ export function __triggerKeyEvent__(
       );
     }
 
-    const keyCode = keyCodeFromKey(key);
-
-    const props = { keyCode, which: keyCode, key };
+    let keyCode = keyCodeFromKey(key);
+    let props = { keyCode, which: keyCode, key };
 
     fireEvent(element, eventType, Object.assign(props, modifiers));
   } else {
@@ -166,14 +164,13 @@ export default async function triggerKeyEvent(
     throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
   }
 
-  // @ts-ignore
-  const element = getElement(target);
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`);
   } else if (!eventType) {
     throw new Error(`Must provide an \`eventType\` to \`triggerKeyEvent\``);
   } else if (!isKeyboardEventType(eventType)) {
-    const validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
+    let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
 
     throw new Error(
       `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`

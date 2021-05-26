@@ -1,8 +1,7 @@
-import { getElement, isSelectElement } from './index';
+import Target, { isSelectElement } from './internal/index';
+import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import fireEvent from './fire-event';
-
-type Target = string | Element | Document | Window;
 
 /**
   Set the `selected` property true for the provided option the target is a
@@ -30,8 +29,7 @@ export default async function select(
     throw new Error('Must provide an `option` or `options` to select when calling `select`.');
   }
 
-  // @ts-ignore
-  const element = getElement(target);
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`select('${target}')\`.`);
   } else if (!isSelectElement(element)) {

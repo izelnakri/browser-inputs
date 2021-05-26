@@ -1,15 +1,14 @@
 import fireEvent from './fire-event';
 import { __blur__ } from './blur';
-import { isFocusable, getElement } from './index';
-
-type Target = string | Element | Document | Window;
+import Target, { isFocusable } from './internal/index';
+import getElement from './internal/get-element';
 
 export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }
 
-  const browserIsNotFocused = document.hasFocus && !document.hasFocus();
+  let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   if (
     document.activeElement &&
@@ -40,8 +39,7 @@ export default async function focus(target: Target): Promise<void> {
     throw new Error('Must pass an element or selector to `focus`.');
   }
 
-  // @ts-ignore
-  const element = getElement(target);
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`focus('${target}')\`.`);
   }

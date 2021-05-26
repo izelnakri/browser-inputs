@@ -1,5 +1,6 @@
 import fireEvent from './fire-event';
-import { isFocusable, getElement, isFormControl } from './index';
+import Target, { isFocusable, isFormControl } from './internal/index';
+import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import { DEFAULT_CLICK_OPTIONS } from './click';
 
@@ -17,8 +18,6 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
   fireEvent(element, 'click', options);
   fireEvent(element, 'dblclick', options);
 }
-
-type Target = string | Element | Document | Window;
 
 /**
   Double-clicks on the specified target.
@@ -39,13 +38,13 @@ export default async function doubleClick(
   target: Target,
   _options: MouseEventInit = {}
 ): Promise<void> {
-  const options = Object.assign({}, DEFAULT_CLICK_OPTIONS, _options);
+  let options = Object.assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   if (!target) {
     throw new Error('Must pass an element or selector to `doubleClick`.');
   }
-  // @ts-ignore
-  const element = getElement(target);
+
+  let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
   } else if (isFormControl(element) && element.disabled) {
