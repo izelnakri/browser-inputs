@@ -15,6 +15,9 @@ import {
   FocusableElement,
   FormControl,
   HTMLElementContentEditable,
+  MouseEventType,
+  KeyboardEventType,
+  FileSelectionEventType,
 } from './internal/index';
 
 export {
@@ -34,6 +37,9 @@ export {
   FocusableElement,
   FormControl,
   HTMLElementContentEditable,
+  MouseEventType,
+  KeyboardEventType,
+  FileSelectionEventType,
 };
 
 export default {

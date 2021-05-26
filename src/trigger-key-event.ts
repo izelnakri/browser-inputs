@@ -1,7 +1,7 @@
 import Target, { isFormControl, isNumeric } from './internal/index';
 import getElement from './internal/get-element';
-import fireEvent, { isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './fire-event';
-import type { KeyboardEventType } from './fire-event';
+import fireEvent from './fire-event';
+import { KeyboardEventType, isKeyboardEventType, KEYBOARD_EVENT_TYPES } from './internal/index';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;

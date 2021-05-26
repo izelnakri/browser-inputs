@@ -1,27 +1,14 @@
-import { isDocument, isElement } from './internal/index';
-
-export type Lit = string | number | boolean | undefined | null | void | {};
-export function tuple<T extends Lit[]>(...args: T) {
-  return args;
-}
-
-export const MOUSE_EVENT_TYPES = tuple(
-  'click',
-  'mousedown',
-  'mouseup',
-  'dblclick',
-  'mouseenter',
-  'mouseleave',
-  'mousemove',
-  'mouseout',
-  'mouseover'
-);
-export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
-export const FILE_SELECTION_EVENT_TYPES = tuple('change');
-
-export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
-export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
-export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
+import {
+  isDocument,
+  isElement,
+  MouseEventType,
+  KeyboardEventType,
+  FileSelectionEventType,
+  isKeyboardEventType,
+  isMouseEventType,
+  isFileSelectionEventType,
+  isFileSelectionInput,
+} from './internal/index';
 
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
   try {
@@ -32,22 +19,6 @@ const MOUSE_EVENT_CONSTRUCTOR = (() => {
     return false;
   }
 })();
-
-export function isKeyboardEventType(eventType: any): eventType is KeyboardEventType {
-  return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
-}
-
-export function isMouseEventType(eventType: any): eventType is MouseEventType {
-  return MOUSE_EVENT_TYPES.indexOf(eventType) > -1;
-}
-
-export function isFileSelectionEventType(eventType: any): eventType is FileSelectionEventType {
-  return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
-}
-
-export function isFileSelectionInput(element: any): element is HTMLInputElement {
-  return element.files;
-}
 
 function fireEvent(
   element: Element | Document | Window,

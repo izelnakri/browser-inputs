@@ -1,4 +1,14 @@
-import Target, { FocusableElement, FormControl, HTMLElementContentEditable } from './types';
+import Target, {
+  FocusableElement,
+  FormControl,
+  HTMLElementContentEditable,
+  MouseEventType,
+  KeyboardEventType,
+  FileSelectionEventType,
+  MOUSE_EVENT_TYPES,
+  KEYBOARD_EVENT_TYPES,
+  FILE_SELECTION_EVENT_TYPES,
+} from './types';
 import getElement from './get-element';
 
 export function isWindow(target: Target): target is Window {
@@ -54,6 +64,22 @@ export function isFocusable(
   return element.hasAttribute('tabindex');
 }
 
+export function isKeyboardEventType(eventType: any): eventType is KeyboardEventType {
+  return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+export function isMouseEventType(eventType: any): eventType is MouseEventType {
+  return MOUSE_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+export function isFileSelectionEventType(eventType: any): eventType is FileSelectionEventType {
+  return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+export function isFileSelectionInput(element: any): element is HTMLInputElement {
+  return element.files;
+}
+
 export function isNumeric(input: string): boolean {
   return !isNaN(parseFloat(input)) && isFinite(Number(input));
 }
@@ -80,4 +106,16 @@ export function guardForMaxlength(element: FormControl, text: string, testHelper
 }
 
 export default Target;
-export { getElement, Target, FocusableElement, FormControl, HTMLElementContentEditable };
+export {
+  getElement,
+  Target,
+  FocusableElement,
+  FormControl,
+  HTMLElementContentEditable,
+  MouseEventType,
+  KeyboardEventType,
+  FileSelectionEventType,
+  MOUSE_EVENT_TYPES,
+  KEYBOARD_EVENT_TYPES,
+  FILE_SELECTION_EVENT_TYPES,
+};
