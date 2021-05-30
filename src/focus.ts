@@ -4,18 +4,27 @@ import Target, { isFocusable } from './internal/index';
 import getElement from './internal/get-element';
 
 export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
+  const previousFocusedElement =
+    document.activeElement &&
+    document.activeElement !== element &&
+    isFocusable(document.activeElement)
+      ? document.activeElement
+      : null;
+
+  // fire __blur__ manually with the null relatedTarget when the target is not focusable
+  // and there was a previously focused element
   if (!isFocusable(element)) {
-    throw new Error(`${element} is not focusable`);
+    if (previousFocusedElement) {
+      __blur__(previousFocusedElement, null);
+    }
+
+    return;
   }
 
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
-  if (
-    document.activeElement &&
-    document.activeElement !== element &&
-    isFocusable(document.activeElement)
-  ) {
-    __blur__(document.activeElement);
+  if (previousFocusedElement && browserIsNotFocused) {
+    __blur__(previousFocusedElement, element);
   }
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
@@ -42,9 +51,9 @@ export default async function focus(target: Target): Promise<void> {
   let element = getElement(target);
   if (!element) {
     throw new Error(`Element not found when calling \`focus('${target}')\`.`);
+  } else if (!isFocusable(element)) {
+    throw new Error(`${element} is not focusable`);
   }
 
   __focus__(element);
-
-  // return settled();
 }

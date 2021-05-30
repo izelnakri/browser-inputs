@@ -1,5 +1,5 @@
 import fireEvent from './fire-event';
-import Target, { isFocusable, isFormControl } from './internal/index';
+import Target, { isFormControl, isWindow } from './internal/index';
 import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import { DEFAULT_CLICK_OPTIONS } from './click';
@@ -7,7 +7,7 @@ import { DEFAULT_CLICK_OPTIONS } from './click';
 export function __doubleClick__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
-  if (isFocusable(element)) {
+  if (!isWindow(element)) {
     __focus__(element);
   }
 

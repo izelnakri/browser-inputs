@@ -60,6 +60,4 @@ export default async function blur(target: Target = document.activeElement!): Pr
   }
 
   __blur__(element);
-
-  // return settled();
 }

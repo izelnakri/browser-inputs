@@ -1,4 +1,4 @@
-import Target, { isFormControl, isFocusable } from './internal/index';
+import Target, { isFormControl, isWindow } from './internal/index';
 import getElement from './internal/get-element';
 import { __focus__ } from './focus';
 import fireEvent from './fire-event';
@@ -14,7 +14,7 @@ export const DEFAULT_CLICK_OPTIONS = {
 export function __click__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
-  if (isFocusable(element)) {
+  if (!isWindow(element)) {
     __focus__(element);
   }
 
