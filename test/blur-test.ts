@@ -1,5 +1,4 @@
 import { hbs } from '@emberx/component';
-import { fn } from '@glimmer/helper';
 import { module, test } from 'qunitx';
 import { render } from '@emberx/test-helpers';
 import { blur, focus } from '../src/index';
