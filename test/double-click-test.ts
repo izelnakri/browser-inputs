@@ -4,13 +4,25 @@ import { render, find } from '@emberx/test-helpers';
 import { doubleClick } from '../src/index';
 import { setupRenderingTest } from './helpers/index';
 
-function setupEventStepListeners(assert, input) {
-  input.addEventListener('mousedown', () => assert.step('mousedown'));
-  input.addEventListener('mouseup', () => assert.step('mouseup'));
-  input.addEventListener('click', () => assert.step('click'));
-  input.addEventListener('focus', () => assert.step('focus'));
-  input.addEventListener('focusin', () => assert.step('focusin'));
-  input.addEventListener('dblclick', () => assert.step('dblclick'));
+function setupEventStepListeners(assert, element) {
+  ['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'dblclick'].forEach((eventName) => {
+    element.addEventListener(eventName, () => assert.step(eventName));
+  });
+}
+
+function setupEventStepListenersForActiveElementInteraction(assert, element) {
+  [
+    'mousedown',
+    'focus',
+    'focusin',
+    'mouseup',
+    'click',
+    'dblclick',
+    'blur',
+    'focusout',
+  ].forEach((eventName) => {
+    element.addEventListener(eventName, () => assert.step(eventName));
+  });
 }
 
 module('emberx/test-helpers | doubleClick', function (hooks) {
@@ -200,6 +212,88 @@ module('emberx/test-helpers | doubleClick', function (hooks) {
           'dblclick',
         ]);
       });
+    });
+  });
+
+  module('focusable and non-focusable elements interaction', function () {
+    test('clicking on non-focusable element triggers blur on active element', async function (assert) {
+      await render(hbs`
+        <div id="test-target-div" />
+        <input id="test-target-input" />
+      `);
+
+      let focusableElement = document.querySelector('#test-target-input');
+
+      setupEventStepListenersForActiveElementInteraction(assert, focusableElement);
+
+      await doubleClick(focusableElement);
+      await doubleClick('#test-target-div');
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('clicking on focusable element triggers blur on active element', async function (assert) {
+      await render(hbs`
+        <input id="test-first-target-input" />
+        <input id="test-second-target-input" />
+      `);
+
+      let focusableElement = document.querySelector('#test-first-target-input');
+
+      setupEventStepListenersForActiveElementInteraction(assert, focusableElement);
+
+      await doubleClick(focusableElement);
+      await doubleClick('#test-second-target-input');
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
+      await render(hbs`
+        <div id="test-first-target-div" />
+        <div id="test-second-target-div" />
+      `);
+
+      let nonFocusableElement = document.querySelector('#test-first-target-div');
+
+      setupEventStepListenersForActiveElementInteraction(assert, nonFocusableElement);
+
+      await doubleClick(nonFocusableElement);
+      await doubleClick('#test-second-target-div');
+
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
   });
 });

@@ -4,8 +4,20 @@ import { render } from '@emberx/test-helpers';
 import { click } from '../src/index';
 import { setupRenderingTest } from './helpers/index';
 
-function setupEventStepListeners(assert, element) {
+function setupClickEventListenersForInput(assert, element) {
   ['mousedown', 'focus', 'mouseup', 'click'].forEach((eventName) => {
+    element.addEventListener(eventName, () => assert.step(eventName));
+  });
+}
+
+function setupClickEventListenersForInputInteraction(assert, element) {
+  ['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout'].forEach((eventName) => {
+    element.addEventListener(eventName, () => assert.step(eventName));
+  });
+}
+
+function setupClickEventListenersForNonInputInteraction(assert, element) {
+  ['mousedown', 'mouseup', 'click'].forEach((eventName) => {
     element.addEventListener(eventName, () => assert.step(eventName));
   });
 }
@@ -33,7 +45,7 @@ module('emberx/test-helpers | click', function (hooks) {
   });
 
   test('it throws when called without target', async function (assert) {
-    const done = assert.async();
+    let done = assert.async();
 
     click().catch((error) => {
       assert.ok(error instanceof Error);
@@ -43,7 +55,7 @@ module('emberx/test-helpers | click', function (hooks) {
   });
 
   test('it throws when target does not exist', async function (assert) {
-    const done = assert.async();
+    let done = assert.async();
 
     click('#asdasdasd').catch((error) => {
       assert.ok(error instanceof Error);
@@ -62,9 +74,9 @@ module('emberx/test-helpers | click', function (hooks) {
 
     assert.dom('#test-input').hasValue('').isNotFocused();
 
-    const input = document.querySelector('#test-input');
+    let input = document.querySelector('#test-input');
 
-    setupEventStepListeners(assert, input);
+    setupClickEventListenersForInput(assert, input);
 
     assert.verifySteps([]);
 
@@ -88,7 +100,7 @@ module('emberx/test-helpers | click', function (hooks) {
   test('it doesnt call mousedown, mouseup, click on disabled form element', async function (assert) {
     assert.expect(9);
 
-    const done = assert.async();
+    let done = assert.async();
 
     await render(hbs`
       <button type="button" data-test-outside></button>
@@ -99,9 +111,9 @@ module('emberx/test-helpers | click', function (hooks) {
 
     assert.dom('#test-input').isNotFocused().isDisabled();
 
-    const input = document.querySelector('#test-input');
+    let input = document.querySelector('#test-input');
 
-    setupEventStepListeners(assert, input);
+    setupClickEventListenersForInput(assert, input);
 
     assert.verifySteps([]);
 
@@ -117,5 +129,55 @@ module('emberx/test-helpers | click', function (hooks) {
         assert.dom('#test-input').isNotFocused().isDisabled();
         done();
       });
+  });
+
+  module('focusable and non-focusable elements interaction', function () {
+    test('clicking on non-focusable element triggers blur on active element', async function (assert) {
+      await render(hbs`
+        <div id="test-target-div" />
+        <input id="test-target-input" />
+      `);
+
+      let focusableElement = document.querySelector('#test-target-input');
+
+      setupClickEventListenersForInputInteraction(assert, focusableElement);
+
+      await click(focusableElement);
+      await click('#test-target-div');
+
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+    });
+
+    test('clicking on focusable element triggers blur on active element', async function (assert) {
+      await render(hbs`
+        <input id="test-first-target-input" />
+        <input id="test-second-target-input" />
+      `);
+
+      let focusableElement = document.querySelector('#test-first-target-input');
+
+      setupClickEventListenersForInputInteraction(assert, focusableElement);
+
+      await click(focusableElement);
+      await click('#test-second-target-input');
+
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+    });
+
+    test('clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
+      await render(hbs`
+        <div id="test-first-target-div" />
+        <div id="test-second-target-div" />
+      `);
+
+      let nonFocusableElement = document.querySelector('#test-first-target-div');
+
+      setupClickEventListenersForNonInputInteraction(assert, nonFocusableElement);
+
+      await click(nonFocusableElement);
+      await click('#test-second-target-div');
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
+    });
   });
 });
