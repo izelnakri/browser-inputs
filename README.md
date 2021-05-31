@@ -1,6 +1,6 @@
 # Browser Inputs
 
-Fast & mature native browser user input simulators for frontend testing. Includes 0 dependencies, extraced from ember.js
+Fast & mature native browser user input simulators for frontend testing. Includes 0 dependencies, extracted from ember.js
 
 #### Installation:
 
@@ -25,7 +25,7 @@ await click('#button');
 - async focus(target);
 - async scrollTo(target, x, y);
 - async select(target, optionsToSelect, keepPreviouslySelected = false);
-- async tap(target, mouseEventOptions);
-- async triggerEvent(target, eventType, options);
+- async tap(target, mouseEventOptions?);
+- async triggerEvent(target, eventType, options?);
 - async triggerKeyEvent(target, keyboardEventType, keyCode, keyModifier? = DEFAULT_MODIFIERS);
 - async typeIn(target, text, optionsForDelay?);
